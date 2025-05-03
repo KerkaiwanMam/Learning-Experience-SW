@@ -127,6 +127,12 @@ app.post('/books/delete/:id', (req, res) => {
     res.status(204).send();
 });
 
+app.get("/search", (req, res) => {
+    const { query } = req.query;
+    console.log(req);
+    res.send(`Search query: ${query}`);
+});
+
 
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
