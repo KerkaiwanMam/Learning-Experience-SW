@@ -9,6 +9,14 @@ const port = 3000;
 
 app.use(bodyParser.json()); // Middleware to parse JSON bodies
 
+const apikey = "1234567890abcdefg"; 
+app.use((req, res, next) => {
+    if (req.headers.apikey !== apikey) {
+        return res.status(401).send('Unauthorized!');   
+    }
+    next();
+});
+
 const books = [{ id: 1, title: '1984', author: 'George Orwell' }, { id: 2, title: 'To Kill a Mockingbird', author: 'Harper Lee' }];
 
 /**  
