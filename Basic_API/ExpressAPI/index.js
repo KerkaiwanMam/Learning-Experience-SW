@@ -1,12 +1,32 @@
 // index.js
 const express = require('express');
+const bodyParser = require('body-parser');
+const swaggerUi = require('swagger-ui-express');
+const swaggerJsDoc = require('swagger-jsdoc');
+
 const app = express();
 const port = 3000;
-const bodyParser = require('body-parser');
 
 app.use(bodyParser.json()); // Middleware to parse JSON bodies
 
 const books = [{ id: 1, title: '1984', author: 'George Orwell' }, { id: 2, title: 'To Kill a Mockingbird', author: 'Harper Lee' }];
+
+/**  
+*   @swagger
+*   /users:
+*       get:
+*         description: Get all users
+*         responses:
+*           200:
+*             description: Success
+*           400:
+*             description: Error
+*/
+
+app.get('/users', (req, res) => {
+    console.log('Users list requested!');
+    res.json([{ id: 1, name: 'John Doe' }, { id: 2, name: 'Jane Doe' }]);
+});
 
 app.get('/', (req, res) => {
     console.log('Request received!');
@@ -133,6 +153,27 @@ app.get("/search", (req, res) => {
     res.send(`Search query: ${query}`);
 });
 
+// Swagger definition setup
+const swaggerOptions = {
+    swaggerDefinition: {
+      openapi: '3.0.0',
+      info: {
+        title: 'Simple Express API',
+        version: '1.0.0',
+        description: 'A simple Express API with Swagger',
+      },
+      servers: [
+        {
+          url: 'http://localhost:3000',
+        },
+      ],
+    },
+    apis: ['./index.js'], // ชี้ไปที่ไฟล์ที่เขียนคอมเมนต์แบบ Swagger
+  };
+  
+  const swaggerDocs = swaggerJsDoc(swaggerOptions);
+  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+  
 
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);

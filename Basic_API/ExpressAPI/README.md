@@ -10,3 +10,6 @@ npm install -D nodemon
 แล้วรันด้วย:
 
 npx nodemon index.js
+
+แสดง swagger
+http://localhost:3000/api-docs/
